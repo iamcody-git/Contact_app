@@ -1,17 +1,13 @@
 import express from "express";
+import { currentUser, loginUser, registerUser } from "../controllers/userController.js";
+import { validateToken } from "../middleware/validateToken.js";
 
 const router = express.Router();
 
-router.post("/register", (req, res) => {
-  res.json({ message: "Register the user" });
-});
+router.post("/register", registerUser);
 
-router.post("/login", (req, res) => {
-  res.json({ message: "Login the user" });
-});
+router.post("/login", loginUser);
 
-router.get("/currentuser", (req, res) => {
-  res.json({ message: " current user infromation" });
-});
+router.get("/currentuser",validateToken,currentUser);
 
 export default router;

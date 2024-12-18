@@ -1,10 +1,12 @@
 import express from 'express'
 import {getContact, getContactWithId,postContact,updateContact,deleteContact}  from '../controllers/contactController.js'
+import { validateToken } from '../middleware/validateToken.js';
 
-const router = express.Router()
+const router = express.Router();
 
-router.route("/").get(getContact).post(postContact)
+router.use(validateToken);
+router.route("/").get(getContact).post(postContact);
 
 router.route("/:id").get(getContactWithId).put(updateContact).delete(deleteContact)
 
-export default router
+export default router;

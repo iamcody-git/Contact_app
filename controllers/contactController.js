@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import { Contact } from "../Models/contactModel.js";
 
 export const getContact = asyncHandler(async (req, res) => {
-  const contacts = await Contact.find();
+  const contacts = await Contact.find({userId:req.user.id});
   res.status(200).json(contacts);
 });
 
@@ -25,6 +25,7 @@ export const postContact = asyncHandler(async (req, res) => {
     name,
     email,
     phone,
+    userId:req.user.id
   });
   res.status(201).json(contact);
 });
@@ -36,11 +37,11 @@ export const updateContact = asyncHandler(async (req, res) => {
     throw new Error("Contact not found");
   }
 
-  const { _id, ...updateData } = req.body; // Exclude _id if present
+  const { _id, ...updateData } = req.body; 
   const updatedContact = await Contact.findOneAndUpdate(
-    { _id: req.params.id }, // Correct filter object
-    updateData,             // Update data
-    { new: true }           // Return the updated document
+    { _id: req.params.id }, 
+    updateData,             
+    { new: true }   
   );
 
   res.status(200).json(updatedContact);
